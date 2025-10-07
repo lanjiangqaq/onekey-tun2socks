@@ -576,7 +576,7 @@ EOF
     echo -e "  ${GREEN}程序配置${NC}：/etc/tun2socks/config.yaml"
     echo -e "  ${GREEN}程序位置${NC}：/usr/local/bin/tun2socks"
     echo
-    info "如需卸载，请运行：$0 -r"
+    info  "如需卸载，请运行：sudo ./onekey-tun2socks.sh -r"
 }
 
 switch_alice_port() {
