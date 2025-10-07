@@ -5,6 +5,7 @@ set -e
 # 常量和全局变量
 #================================================================================
 VERSION="1.1.2"
+# 请确保将此 URL 替换为你 GitHub 仓库的 Raw URL，以保证脚本的 -u 更新功能正常。
 SCRIPT_URL="https://raw.githubusercontent.com/hkfires/onekey-tun2socks/main/onekey-tun2socks.sh"
 
 # 颜色定义
@@ -16,7 +17,7 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-# 备用 DNS64 服务器 - 保持所有地址 (不移除第一个)
+# 备用 DNS64 服务器 (保持不变)
 ALTERNATE_DNS64_SERVERS=(
     "2a00:1098:2b::1"
     "2a01:4f8:c2c:123f::1"
@@ -261,7 +262,7 @@ get_custom_server_config() {
 select_alice_port() {
     # 移除 10001 端口，统一描述为“台湾家宽”，移除弃用标记和警告
     local options=(
-        "台湾家宽:20000"
+        "台湾家宽:20000" # 选项 1
         "台湾家宽:30000"
         "台湾家宽:40000"
         "台湾家宽:50000"
@@ -281,9 +282,10 @@ select_alice_port() {
 
     local choice
     while true; do
-        # 默认值仍为 1，现在对应端口 20000
-        read -r -p "请输入选项 (1-${#options[@]}，默认为1): " choice
-        choice=${choice:-1}
+        # 移除默认值 '默认为1'，强制用户输入
+        read -r -p "请输入选项 (1-${#options[@]}): " choice
+        
+        # 检查输入是否为空或是否为有效数字
         if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#options[@]} ]; then
             local selected_option="${options[$((choice-1))]}"
             local port="${selected_option#*:}"
@@ -291,7 +293,7 @@ select_alice_port() {
             echo "$port"
             return
         else
-            error "无效的选择，请输入 1 到 ${#options[@]} 之间的数字。" >&2
+            error "无效的选择或未输入，请输入 1 到 ${#options[@]} 之间的数字。" >&2
         fi
     done
 }
@@ -615,7 +617,7 @@ switch_alice_port() {
 
     step "正在更新配置文件 $CONFIG_FILE ..."
     # 使用 \b 确保只替换整个单词/数字，避免误伤其他配置
-    sed -i "s/\bport: $current_port\b/port: $NEW_SOCKS_PORT/" "$CONFIG_FILE"
+    sed -i "s/port: $current_port/port: $NEW_SOCKS_PORT/" "$CONFIG_FILE"
     if grep -q "port: $NEW_SOCKS_PORT" "$CONFIG_FILE"; then
         success "配置文件已更新，新端口为: $NEW_SOCKS_PORT"
     else
