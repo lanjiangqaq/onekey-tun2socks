@@ -6,7 +6,7 @@ set -e
 #================================================================================
 VERSION="1.1.2"
 # 请确保将此 URL 替换为你 GitHub 仓库的 Raw URL，以保证脚本的 -u 更新功能正常。
-SCRIPT_URL="https://raw.githubusercontent.com/hkfires/onekey-tun2socks/main/onekey-tun2socks.sh"
+SCRIPT_URL="https://raw.githubusercontent.com/lanjiangqaq/onekey-tun2socks/main/onekey-tun2socks.sh"
 
 # 颜色定义
 RED='\033[0;31m'
@@ -269,7 +269,7 @@ select_alice_port() {
     )
     echo >&2
     echo -e "${GREEN}=========================================================${NC}" >&2
-    info "请为 Alice 模式选择 Socks5 出口端口 (统一描述为台湾家宽):" >&2
+    info "请为 Alice 模式选择 Socks5 出口端口 :" >&2
     echo -e "${GREEN}=========================================================${NC}" >&2
     echo >&2
     
