@@ -18,11 +18,8 @@ NC='\033[0m'
 
 # 备用 DNS64 服务器
 ALTERNATE_DNS64_SERVERS=(
-    "2a00:1098:2b::1"
-    "2a01:4f8:c2c:123f::1"
-    "2a01:4f9:c010:3f02::1"
-    "2001:67c:2b0::4"
-    "2001:67c:2b0::6"
+    "2a14:67c0:11e::1"
+    "2a14:67c0:119::1"
 )
 
 # 脚本操作的全局变量
@@ -52,7 +49,7 @@ show_usage() {
     echo -e "  ${GREEN}-r, --remove${NC}     卸载 tun2socks"
     echo -e "  ${GREEN}-s, --switch${NC}     切换 Alice 模式的 Socks5 端口 (如果已安装)"
     echo -e "  ${GREEN}-u, --update${NC}     检查并更新脚本"
-    echo -e "  ${GREEN}-h, --help${NC}        显示此帮助信息"
+    echo -e "  ${GREEN}-h, --help${NC}       显示此帮助信息"
     echo
     echo -e "${CYAN}示例:${NC}"
     echo -e "  $0 -i alice    安装 Alice 版本的 tun2socks"
@@ -119,7 +116,8 @@ set_dns64_servers() {
     
     step "设置 DNS64 服务器（用于下载tun2socks）..."
     cat > "$resolv_conf" <<EOF
-nameserver 2602:fc59:b0:9e::64
+nameserver 2a14:67c0:11e::1
+nameserver 2a14:67c0:119::1
 EOF
     
     if test_github_access; then
